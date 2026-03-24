@@ -14,4 +14,12 @@ export declare class Hall {
     tags: string[];
     isActive: boolean;
 }
-export declare const HallSchema: any;
+export declare const HallSchema: import("mongoose").Schema<Hall, import("mongoose").Model<Hall, any, any, any, Document<unknown, any, Hall, any, {}> & Hall & {
+    _id: Types.ObjectId;
+} & {
+    __v: number;
+}, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, Hall, Document<unknown, {}, import("mongoose").FlatRecord<Hall>, {}, import("mongoose").DefaultSchemaOptions> & import("mongoose").FlatRecord<Hall> & {
+    _id: Types.ObjectId;
+} & {
+    __v: number;
+}>;

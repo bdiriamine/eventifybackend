@@ -2,8 +2,10 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Invoice, InvoiceDocument } from './invoice.schema';
-import * as PDFDocument from 'pdfkit';
 import * as path from 'path';
+
+// Use require for pdfkit
+const PDFDocument = require('pdfkit');
 
 @Injectable()
 export class InvoicesService {
@@ -28,6 +30,7 @@ export class InvoicesService {
       doc.on('end', () => resolve(Buffer.concat(chunks)));
       doc.on('error', reject);
 
+      // Rest of your PDF generation code remains the same...
       // Header
       doc.fontSize(24).fillColor('#f59e0b').text('✦ EVENTIFY TUNISIA', 50, 50);
       doc.fontSize(10).fillColor('#6b7280').text('Plateforme de Planification d\'Événements', 50, 80);
