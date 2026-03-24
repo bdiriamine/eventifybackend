@@ -11,9 +11,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
+var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.InvoicesController = void 0;
 const common_1 = require("@nestjs/common");
+const express_1 = require("express");
 const swagger_1 = require("@nestjs/swagger");
 const invoices_service_1 = require("./invoices.service");
 const jwt_auth_guard_1 = require("../common/guards/jwt-auth.guard");
@@ -66,7 +68,7 @@ __decorate([
     __param(1, (0, common_1.Res)()),
     __param(2, (0, common_1.Request)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Object, Object]),
+    __metadata("design:paramtypes", [String, typeof (_a = typeof express_1.Response !== "undefined" && express_1.Response) === "function" ? _a : Object, Object]),
     __metadata("design:returntype", Promise)
 ], InvoicesController.prototype, "download", null);
 exports.InvoicesController = InvoicesController = __decorate([

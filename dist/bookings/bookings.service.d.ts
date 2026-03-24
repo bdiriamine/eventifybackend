@@ -10,11 +10,5 @@ export declare class BookingsService {
     updateStatus(id: string, status: string, userRole: string): Promise<BookingDocument>;
     payDeposit(id: string, userId: string, paymentMethod: string): Promise<BookingDocument>;
     payRemaining(id: string, userId: string, paymentMethod: string): Promise<BookingDocument>;
-    getAnalytics(): Promise<{
-        total: number;
-        pending: number;
-        revenue: any;
-        byType: any[];
-        byMonth: any[];
-    }>;
+    getAnalytics(): unknown;
 }

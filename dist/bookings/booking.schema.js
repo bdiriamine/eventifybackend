@@ -8,6 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var _a, _b, _c;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BookingSchema = exports.Booking = void 0;
 const mongoose_1 = require("@nestjs/mongoose");
@@ -17,7 +18,7 @@ let Booking = class Booking {
 exports.Booking = Booking;
 __decorate([
     (0, mongoose_1.Prop)({ type: mongoose_2.Types.ObjectId, ref: 'User', required: true }),
-    __metadata("design:type", mongoose_2.Types.ObjectId)
+    __metadata("design:type", typeof (_a = typeof mongoose_2.Types !== "undefined" && mongoose_2.Types.ObjectId) === "function" ? _a : Object)
 ], Booking.prototype, "userId", void 0);
 __decorate([
     (0, mongoose_1.Prop)({ enum: ['wedding', 'henna', 'concert', 'conference'], required: true }),
@@ -25,7 +26,7 @@ __decorate([
 ], Booking.prototype, "eventType", void 0);
 __decorate([
     (0, mongoose_1.Prop)({ required: true }),
-    __metadata("design:type", Date)
+    __metadata("design:type", typeof (_b = typeof Date !== "undefined" && Date) === "function" ? _b : Object)
 ], Booking.prototype, "eventDate", void 0);
 __decorate([
     (0, mongoose_1.Prop)({ required: true }),
@@ -37,7 +38,7 @@ __decorate([
 ], Booking.prototype, "guestCount", void 0);
 __decorate([
     (0, mongoose_1.Prop)({ type: mongoose_2.Types.ObjectId, ref: 'Hall' }),
-    __metadata("design:type", mongoose_2.Types.ObjectId)
+    __metadata("design:type", typeof (_c = typeof mongoose_2.Types !== "undefined" && mongoose_2.Types.ObjectId) === "function" ? _c : Object)
 ], Booking.prototype, "hallId", void 0);
 __decorate([
     (0, mongoose_1.Prop)([{

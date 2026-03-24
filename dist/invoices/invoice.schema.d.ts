@@ -8,12 +8,4 @@ export declare class Invoice {
     paidAmount: number;
     remainingAmount: number;
 }
-export declare const InvoiceSchema: import("mongoose").Schema<Invoice, import("mongoose").Model<Invoice, any, any, any, Document<unknown, any, Invoice, any, {}> & Invoice & {
-    _id: Types.ObjectId;
-} & {
-    __v: number;
-}, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, Invoice, Document<unknown, {}, import("mongoose").FlatRecord<Invoice>, {}, import("mongoose").DefaultSchemaOptions> & import("mongoose").FlatRecord<Invoice> & {
-    _id: Types.ObjectId;
-} & {
-    __v: number;
-}>;
+export declare const InvoiceSchema: any;
