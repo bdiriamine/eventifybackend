@@ -17,7 +17,7 @@ const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
 const mongoose_2 = require("mongoose");
 const invoice_schema_1 = require("./invoice.schema");
-const PDFDocument = require('pdfkit');
+const PDFDocument = require("pdfkit");
 let InvoicesService = class InvoicesService {
     constructor(model) {
         this.model = model;

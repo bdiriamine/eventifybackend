@@ -21,17 +21,28 @@ let UsersService = class UsersService {
     constructor(userModel) {
         this.userModel = userModel;
     }
-    async create(data) { return this.userModel.create(data); }
-    async findByEmail(email) { return this.userModel.findOne({ email }); }
+    async create(data) {
+        return this.userModel.create(data);
+    }
+    async findByEmail(email) {
+        return this.userModel.findOne({ email });
+    }
     async findById(id) {
         const u = await this.userModel.findById(id);
         if (!u)
             throw new common_1.NotFoundException('User not found');
         return u;
     }
-    async findAll() { return this.userModel.find().select('-password'); }
+    async findAll() {
+        return this.userModel.find().select('-password').sort({ createdAt: -1 });
+    }
+    async findByRole(role) {
+        return this.userModel.find({ role }).select('-password').sort({ name: 1 });
+    }
     async update(id, data) {
-        const u = await this.userModel.findByIdAndUpdate(id, data, { new: true }).select('-password');
+        const u = await this.userModel
+            .findByIdAndUpdate(id, data, { new: true })
+            .select('-password');
         if (!u)
             throw new common_1.NotFoundException('User not found');
         return u;

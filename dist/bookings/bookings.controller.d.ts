@@ -8,12 +8,15 @@ export declare class BookingsController {
     analytics(): Promise<{
         total: number;
         pending: number;
+        ownerPending: number;
         revenue: any;
         byType: any[];
         byMonth: any[];
     }>;
-    findOne(id: any): Promise<import("./booking.schema").BookingDocument>;
-    updateStatus(id: any, body: any, req: any): Promise<import("./booking.schema").BookingDocument>;
-    payDeposit(id: any, body: any, req: any): Promise<import("./booking.schema").BookingDocument>;
-    payRemaining(id: any, body: any, req: any): Promise<import("./booking.schema").BookingDocument>;
+    findOne(id: string): Promise<import("./booking.schema").BookingDocument>;
+    ownerDecision(id: string, body: any, req: any): Promise<import("./booking.schema").BookingDocument>;
+    adminDecision(id: string, body: any): Promise<import("./booking.schema").BookingDocument>;
+    payDeposit(id: string, body: any, req: any): Promise<import("./booking.schema").BookingDocument>;
+    payRemaining(id: string, req: any): Promise<import("./booking.schema").BookingDocument>;
+    updateStatus(id: string, body: any, req: any): Promise<import("./booking.schema").BookingDocument>;
 }

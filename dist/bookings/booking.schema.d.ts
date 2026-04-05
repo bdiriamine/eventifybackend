@@ -9,15 +9,21 @@ export declare class Booking {
     hallId: Types.ObjectId;
     services: any[];
     products: any[];
+    juiceOrder?: any;
+    carRental?: any;
+    saleOrders: any[];
     totalPrice: number;
     depositAmount: number;
     depositPaid: boolean;
     remainingAmount: number;
     remainingPaid: boolean;
+    paymentMethod: string;
     status: string;
+    ownerNote: string;
+    adminNote: string;
+    clientNote: string;
     nationalId: string;
     acceptedTerms: boolean;
-    paymentMethod: string;
     notes: string;
 }
 export declare const BookingSchema: import("mongoose").Schema<Booking, import("mongoose").Model<Booking, any, any, any, Document<unknown, any, Booking, any, {}> & Booking & {

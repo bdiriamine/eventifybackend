@@ -7,5 +7,6 @@ export declare class UsersService {
     findByEmail(email: string): Promise<UserDocument | null>;
     findById(id: string): Promise<UserDocument>;
     findAll(): Promise<UserDocument[]>;
+    findByRole(role: string): Promise<UserDocument[]>;
     update(id: string, data: Partial<User>): Promise<UserDocument>;
 }

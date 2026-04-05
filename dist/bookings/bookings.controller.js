@@ -30,14 +30,20 @@ let BookingsController = class BookingsController {
     findMy(req) { return this.svc.findByUser(req.user.sub); }
     analytics() { return this.svc.getAnalytics(); }
     findOne(id) { return this.svc.findById(id); }
-    updateStatus(id, body, req) {
-        return this.svc.updateStatus(id, body.status, req.user.role);
+    ownerDecision(id, body, req) {
+        return this.svc.ownerDecision(id, req.user.sub, Boolean(body.approved), body.note);
+    }
+    adminDecision(id, body) {
+        return this.svc.adminDecision(id, Boolean(body.approved), body.note);
     }
     payDeposit(id, body, req) {
         return this.svc.payDeposit(id, req.user.sub, body.paymentMethod);
     }
-    payRemaining(id, body, req) {
-        return this.svc.payRemaining(id, req.user.sub, body.paymentMethod);
+    payRemaining(id, req) {
+        return this.svc.payRemaining(id, req.user.sub);
+    }
+    updateStatus(id, body, req) {
+        return this.svc.updateStatus(id, body.status, req.user.role);
     }
 };
 exports.BookingsController = BookingsController;
@@ -77,9 +83,47 @@ __decorate([
     (0, common_1.Get)(':id'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], BookingsController.prototype, "findOne", null);
+__decorate([
+    (0, common_1.Post)(':id/owner-decision'),
+    (0, common_1.UseGuards)(roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)('manager', 'admin'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __param(2, (0, common_1.Request)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object, Object]),
+    __metadata("design:returntype", void 0)
+], BookingsController.prototype, "ownerDecision", null);
+__decorate([
+    (0, common_1.Post)(':id/admin-decision'),
+    (0, common_1.UseGuards)(roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)('admin'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", void 0)
+], BookingsController.prototype, "adminDecision", null);
+__decorate([
+    (0, common_1.Post)(':id/pay-deposit'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __param(2, (0, common_1.Request)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object, Object]),
+    __metadata("design:returntype", void 0)
+], BookingsController.prototype, "payDeposit", null);
+__decorate([
+    (0, common_1.Post)(':id/pay-remaining'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Request)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", void 0)
+], BookingsController.prototype, "payRemaining", null);
 __decorate([
     (0, common_1.Patch)(':id/status'),
     (0, common_1.UseGuards)(roles_guard_1.RolesGuard),
@@ -88,27 +132,9 @@ __decorate([
     __param(1, (0, common_1.Body)()),
     __param(2, (0, common_1.Request)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object, Object]),
+    __metadata("design:paramtypes", [String, Object, Object]),
     __metadata("design:returntype", void 0)
 ], BookingsController.prototype, "updateStatus", null);
-__decorate([
-    (0, common_1.Post)(':id/pay-deposit'),
-    __param(0, (0, common_1.Param)('id')),
-    __param(1, (0, common_1.Body)()),
-    __param(2, (0, common_1.Request)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object, Object]),
-    __metadata("design:returntype", void 0)
-], BookingsController.prototype, "payDeposit", null);
-__decorate([
-    (0, common_1.Post)(':id/pay-remaining'),
-    __param(0, (0, common_1.Param)('id')),
-    __param(1, (0, common_1.Body)()),
-    __param(2, (0, common_1.Request)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object, Object]),
-    __metadata("design:returntype", void 0)
-], BookingsController.prototype, "payRemaining", null);
 exports.BookingsController = BookingsController = __decorate([
     (0, swagger_1.ApiTags)('Bookings'),
     (0, common_1.Controller)('bookings'),

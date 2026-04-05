@@ -24,10 +24,32 @@ let UsersController = class UsersController {
         this.usersService = usersService;
     }
     findAll() { return this.usersService.findAll(); }
+    findManagers() { return this.usersService.findByRole('manager'); }
     updateMe(req, body) {
-        const allowed = { name: body.name, phone: body.phone, city: body.city, nationalId: body.nationalId };
-        const data = Object.fromEntries(Object.entries(allowed).filter(([, v]) => v !== undefined));
-        return this.usersService.update(req.user.sub, data);
+        const allowed = {};
+        if (body.name !== undefined)
+            allowed.name = body.name;
+        if (body.phone !== undefined)
+            allowed.phone = body.phone;
+        if (body.city !== undefined)
+            allowed.city = body.city;
+        if (body.nationalId !== undefined)
+            allowed.nationalId = body.nationalId;
+        return this.usersService.update(req.user.sub, allowed);
+    }
+    updateUser(id, body) {
+        const allowed = {};
+        if (body.role !== undefined)
+            allowed.role = body.role;
+        if (body.name !== undefined)
+            allowed.name = body.name;
+        if (body.phone !== undefined)
+            allowed.phone = body.phone;
+        if (body.city !== undefined)
+            allowed.city = body.city;
+        if (body.nationalId !== undefined)
+            allowed.nationalId = body.nationalId;
+        return this.usersService.update(id, allowed);
     }
 };
 exports.UsersController = UsersController;
@@ -40,6 +62,14 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], UsersController.prototype, "findAll", null);
 __decorate([
+    (0, common_1.Get)('managers'),
+    (0, common_1.UseGuards)(roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)('admin'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], UsersController.prototype, "findManagers", null);
+__decorate([
     (0, common_1.Patch)('me'),
     __param(0, (0, common_1.Request)()),
     __param(1, (0, common_1.Body)()),
@@ -47,6 +77,16 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", void 0)
 ], UsersController.prototype, "updateMe", null);
+__decorate([
+    (0, common_1.Patch)(':id'),
+    (0, common_1.UseGuards)(roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)('admin'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", void 0)
+], UsersController.prototype, "updateUser", null);
 exports.UsersController = UsersController = __decorate([
     (0, swagger_1.ApiTags)('Users'),
     (0, common_1.Controller)('users'),

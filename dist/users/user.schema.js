@@ -33,7 +33,7 @@ __decorate([
     __metadata("design:type", String)
 ], User.prototype, "password", void 0);
 __decorate([
-    (0, mongoose_1.Prop)({ enum: UserRole, default: UserRole.CLIENT }),
+    (0, mongoose_1.Prop)({ enum: Object.values(UserRole), default: UserRole.CLIENT }),
     __metadata("design:type", String)
 ], User.prototype, "role", void 0);
 __decorate([

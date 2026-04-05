@@ -1,9 +1,11 @@
+// src/auth/auth.service.ts
 import { Injectable, UnauthorizedException, ConflictException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
 import { UsersService } from '../users/users.service';
 import { RegisterDto } from './dto/register.dto';
-import { UserRole } from '../users/user.schema'; 
+import { UserRole } from '../users/user.schema'; // Import the UserRole enum
+
 @Injectable()
 export class AuthService {
   constructor(private usersService: UsersService, private jwtService: JwtService) {}
@@ -12,10 +14,11 @@ export class AuthService {
     const existing = await this.usersService.findByEmail(dto.email);
     if (existing) throw new ConflictException('Email already in use');
     const hashed = await bcrypt.hash(dto.password, 12);
+    // Use the enum value instead of the string 'client'
     const user = await this.usersService.create({ 
       ...dto, 
       password: hashed, 
-      role: UserRole.CLIENT // Use the enum instead of string literal
+      role: UserRole.CLIENT  // Changed from 'client' to UserRole.CLIENT
     });
     const token = this.jwtService.sign({ 
       sub: user._id, 
