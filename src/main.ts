@@ -1,12 +1,12 @@
 // main.ts - Ajoutez ces lignes au tout début
-import * as dns from 'dns';
+import  dns from 'dns';
 dns.setServers(['1.1.1.1', '8.8.8.8']); // Cloudflare DNS et Google DNS
 
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-
+import helmet from 'helmet'; 
 async function bootstrap() {
   // Vérification du DNS (optionnel)
   console.log('🔧 DNS Servers:', dns.getServers());

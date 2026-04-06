@@ -2,8 +2,9 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Invoice, InvoiceDocument } from './invoice.schema';
-import * as PDFDocument from 'pdfkit';
-import * as path from 'path';
+import PDFDocument from 'pdfkit';
+
+import  path from 'path';
 
 @Injectable()
 export class InvoicesService {
