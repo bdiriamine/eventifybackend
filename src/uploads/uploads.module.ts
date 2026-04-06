@@ -1,5 +1,18 @@
 import { Module } from '@nestjs/common';
+import { MulterModule } from '@nestjs/platform-express';
+import * as multer from 'multer';
 import { UploadsController } from './uploads.controller';
 import { UploadsService } from './uploads.service';
-@Module({ controllers: [UploadsController], providers: [UploadsService] })
+
+@Module({
+  imports: [
+    MulterModule.register({
+      storage: multer.memoryStorage(),
+      limits: { fileSize: 10 * 1024 * 1024 }, // 10 MB
+    }),
+  ],
+  controllers: [UploadsController],
+  providers: [UploadsService],
+  exports: [UploadsService],
+})
 export class UploadsModule {}

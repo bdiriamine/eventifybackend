@@ -12,21 +12,48 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.BookingSchema = exports.Booking = void 0;
 const mongoose_1 = require("@nestjs/mongoose");
 const mongoose_2 = require("mongoose");
-const JuiceOrderSchema = {
-    type: { type: String },
-    liters: { type: Number, default: 1 },
-};
-const CarRentalSchema = {
-    type: { type: String },
-    duration: { type: String },
-    withDriver: { type: Boolean, default: false },
-    price: { type: Number, default: 0 },
-};
-const SaleSchema = {
-    type: { type: String },
-    quantity: { type: Number, default: 1 },
-    unit: { type: String, default: 'plateau' },
-};
+class JuiceOrder {
+}
+__decorate([
+    (0, mongoose_1.Prop)({ type: String }),
+    __metadata("design:type", String)
+], JuiceOrder.prototype, "type", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ default: 1 }),
+    __metadata("design:type", Number)
+], JuiceOrder.prototype, "liters", void 0);
+class CarRental {
+}
+__decorate([
+    (0, mongoose_1.Prop)({ type: String }),
+    __metadata("design:type", String)
+], CarRental.prototype, "type", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ type: String }),
+    __metadata("design:type", String)
+], CarRental.prototype, "duration", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ default: false }),
+    __metadata("design:type", Boolean)
+], CarRental.prototype, "withDriver", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ default: 0 }),
+    __metadata("design:type", Number)
+], CarRental.prototype, "price", void 0);
+class SaleOrder {
+}
+__decorate([
+    (0, mongoose_1.Prop)({ type: String }),
+    __metadata("design:type", String)
+], SaleOrder.prototype, "type", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ default: 1 }),
+    __metadata("design:type", Number)
+], SaleOrder.prototype, "quantity", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ default: 'plateau' }),
+    __metadata("design:type", String)
+], SaleOrder.prototype, "unit", void 0);
 let Booking = class Booking {
 };
 exports.Booking = Booking;
@@ -55,23 +82,31 @@ __decorate([
     __metadata("design:type", mongoose_2.Types.ObjectId)
 ], Booking.prototype, "hallId", void 0);
 __decorate([
-    (0, mongoose_1.Prop)([{ servicePackId: { type: mongoose_2.Types.ObjectId, ref: 'Service' }, quantity: { type: Number, default: 1 }, subtotal: Number }]),
+    (0, mongoose_1.Prop)([{
+            servicePackId: { type: mongoose_2.Types.ObjectId, ref: 'Service' },
+            quantity: { type: Number, default: 1 },
+            subtotal: Number
+        }]),
     __metadata("design:type", Array)
 ], Booking.prototype, "services", void 0);
 __decorate([
-    (0, mongoose_1.Prop)([{ productId: { type: mongoose_2.Types.ObjectId, ref: 'Product' }, quantity: Number, subtotal: Number }]),
+    (0, mongoose_1.Prop)([{
+            productId: { type: mongoose_2.Types.ObjectId, ref: 'Product' },
+            quantity: Number,
+            subtotal: Number
+        }]),
     __metadata("design:type", Array)
 ], Booking.prototype, "products", void 0);
 __decorate([
-    (0, mongoose_1.Prop)({ type: { juices: [JuiceOrderSchema], totalLiters: Number, subtotal: Number } }),
-    __metadata("design:type", Object)
+    (0, mongoose_1.Prop)({ type: JuiceOrder, default: null }),
+    __metadata("design:type", JuiceOrder)
 ], Booking.prototype, "juiceOrder", void 0);
 __decorate([
-    (0, mongoose_1.Prop)({ type: CarRentalSchema }),
-    __metadata("design:type", Object)
+    (0, mongoose_1.Prop)({ type: CarRental, default: null }),
+    __metadata("design:type", CarRental)
 ], Booking.prototype, "carRental", void 0);
 __decorate([
-    (0, mongoose_1.Prop)({ type: [SaleSchema], default: [] }),
+    (0, mongoose_1.Prop)({ type: [SaleOrder], default: [] }),
     __metadata("design:type", Array)
 ], Booking.prototype, "saleOrders", void 0);
 __decorate([
@@ -100,7 +135,8 @@ __decorate([
 ], Booking.prototype, "paymentMethod", void 0);
 __decorate([
     (0, mongoose_1.Prop)({
-        enum: ['Pending', 'OwnerApproved', 'OwnerRejected', 'AdminValidated', 'AdminRejected', 'AwaitingPayment', 'Confirmed', 'Completed', 'Cancelled'],
+        enum: ['Pending', 'OwnerApproved', 'OwnerRejected', 'AdminValidated',
+            'AdminRejected', 'AwaitingPayment', 'Confirmed', 'Completed', 'Cancelled'],
         default: 'Pending',
     }),
     __metadata("design:type", String)

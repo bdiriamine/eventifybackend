@@ -14,36 +14,50 @@ exports.UploadsService = void 0;
 const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
 const cloudinary_1 = require("cloudinary");
+const fs = require("fs");
+const path = require("path");
+const uuid_1 = require("uuid");
 let UploadsService = UploadsService_1 = class UploadsService {
     constructor(cfg) {
         this.cfg = cfg;
         this.logger = new common_1.Logger(UploadsService_1.name);
-        this.configured = false;
+        this.cloudinaryConfigured = false;
+        this.publicDir = path.join(process.cwd(), 'public', 'uploads');
         const cloudName = cfg.get('CLOUDINARY_CLOUD_NAME');
         const apiKey = cfg.get('CLOUDINARY_API_KEY');
         const apiSecret = cfg.get('CLOUDINARY_API_SECRET');
         if (cloudName && apiKey && apiSecret) {
             cloudinary_1.v2.config({ cloud_name: cloudName, api_key: apiKey, api_secret: apiSecret });
-            this.configured = true;
+            this.cloudinaryConfigured = true;
+            this.logger.log('Cloudinary configured ✅');
         }
         else {
-            this.logger.warn('Cloudinary not configured — image upload disabled');
+            fs.mkdirSync(this.publicDir, { recursive: true });
+            this.logger.warn('Cloudinary not configured — using local storage at public/uploads/');
         }
     }
     async uploadImage(file, folder = 'eventify') {
-        if (!this.configured) {
-            this.logger.warn('Upload skipped: Cloudinary not configured');
-            return '';
-        }
-        return new Promise((resolve, reject) => {
-            const stream = cloudinary_1.v2.uploader.upload_stream({ folder }, (err, result) => {
-                if (err || !result)
-                    reject(err !== null && err !== void 0 ? err : new Error('Upload failed'));
-                else
-                    resolve(result.secure_url);
+        var _a;
+        if (!file)
+            throw new Error('No file provided');
+        if (this.cloudinaryConfigured) {
+            return new Promise((resolve, reject) => {
+                const stream = cloudinary_1.v2.uploader.upload_stream({ folder, resource_type: 'image' }, (err, result) => {
+                    if (err || !result)
+                        reject(err !== null && err !== void 0 ? err : new Error('Cloudinary upload failed'));
+                    else
+                        resolve(result.secure_url);
+                });
+                stream.end(file.buffer);
             });
-            stream.end(file.buffer);
-        });
+        }
+        const ext = ((_a = file.originalname.split('.').pop()) !== null && _a !== void 0 ? _a : 'jpg').toLowerCase();
+        const filename = `${(0, uuid_1.v4)()}.${ext}`;
+        const subDir = path.join(this.publicDir, folder);
+        fs.mkdirSync(subDir, { recursive: true });
+        fs.writeFileSync(path.join(subDir, filename), file.buffer);
+        const baseUrl = this.cfg.get('BACKEND_URL') || `http://localhost:${this.cfg.get('PORT') || 3001}`;
+        return `${baseUrl}/uploads/${folder}/${filename}`;
     }
 };
 exports.UploadsService = UploadsService;

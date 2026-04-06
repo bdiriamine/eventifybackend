@@ -23,14 +23,22 @@ let UploadsController = class UploadsController {
         this.svc = svc;
     }
     async uploadImage(file) {
-        const url = await this.svc.uploadImage(file);
-        return { url };
+        if (!file)
+            throw new common_1.BadRequestException('No file uploaded');
+        const allowed = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif'];
+        if (!allowed.includes(file.mimetype)) {
+            throw new common_1.BadRequestException('Only image files are allowed (jpg, png, webp, gif)');
+        }
+        const url = await this.svc.uploadImage(file, 'eventify');
+        return { url, filename: file.originalname, size: file.size };
     }
 };
 exports.UploadsController = UploadsController;
 __decorate([
     (0, common_1.Post)('image'),
     (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file')),
+    (0, swagger_1.ApiConsumes)('multipart/form-data'),
+    (0, swagger_1.ApiBody)({ description: 'Image file', schema: { type: 'object', properties: { file: { type: 'string', format: 'binary' } } } }),
     __param(0, (0, common_1.UploadedFile)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),

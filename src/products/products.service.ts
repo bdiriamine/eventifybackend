@@ -26,10 +26,9 @@ export class ProductsService {
       description:     data.description || '',
       price:           Number(data.price),
       priceUnit:       data.priceUnit || '/unité',
-      icon:            data.icon || '📦',
       category:        data.category || 'Autre',
       stock:           Number(data.stock) || 0,
-      images:          Array.isArray(data.images) ? data.images : [],
+      images:          Array.isArray(data.images) ? data.images.filter(Boolean) : [],
       rentalAvailable: data.rentalAvailable !== false,
       isActive:        true,
     });
@@ -41,11 +40,12 @@ export class ProductsService {
     if (data.description     !== undefined) update.description     = data.description;
     if (data.price           !== undefined) update.price           = Number(data.price);
     if (data.priceUnit       !== undefined) update.priceUnit       = data.priceUnit;
-    if (data.icon            !== undefined) update.icon            = data.icon;
     if (data.category        !== undefined) update.category        = data.category;
     if (data.stock           !== undefined) update.stock           = Number(data.stock);
     if (data.rentalAvailable !== undefined) update.rentalAvailable = Boolean(data.rentalAvailable);
     if (data.isActive        !== undefined) update.isActive        = Boolean(data.isActive);
+    if (data.images          !== undefined) update.images = Array.isArray(data.images)
+      ? data.images.filter(Boolean) : [];
 
     const p = await this.model.findByIdAndUpdate(id, update, { new: true });
     if (!p) throw new NotFoundException('Product not found');

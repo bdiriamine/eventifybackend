@@ -4,5 +4,7 @@ export declare class UploadsController {
     constructor(svc: UploadsService);
     uploadImage(file: Express.Multer.File): Promise<{
         url: string;
+        filename: string;
+        size: number;
     }>;
 }

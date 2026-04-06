@@ -54,6 +54,7 @@ export class ServicesService {
     if (data.features    !== undefined) update.features    = data.features;
     if (data.eventTypes  !== undefined) update.eventTypes  = data.eventTypes;
     if (data.isActive    !== undefined) update.isActive    = Boolean(data.isActive);
+    if (data.images      !== undefined) update.images      = Array.isArray(data.images) ? data.images.filter(Boolean) : [];
 
     const s = await this.model.findByIdAndUpdate(id, update, { new: true });
     if (!s) throw new NotFoundException('Service not found');

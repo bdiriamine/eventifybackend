@@ -1,5 +1,20 @@
 import { Document, Types } from 'mongoose';
 export type BookingDocument = Booking & Document;
+declare class JuiceOrder {
+    type: string;
+    liters: number;
+}
+declare class CarRental {
+    type: string;
+    duration: string;
+    withDriver: boolean;
+    price: number;
+}
+declare class SaleOrder {
+    type: string;
+    quantity: number;
+    unit: string;
+}
 export declare class Booking {
     userId: Types.ObjectId;
     eventType: string;
@@ -9,9 +24,9 @@ export declare class Booking {
     hallId: Types.ObjectId;
     services: any[];
     products: any[];
-    juiceOrder?: any;
-    carRental?: any;
-    saleOrders: any[];
+    juiceOrder: JuiceOrder;
+    carRental: CarRental;
+    saleOrders: SaleOrder[];
     totalPrice: number;
     depositAmount: number;
     depositPaid: boolean;
@@ -35,3 +50,4 @@ export declare const BookingSchema: import("mongoose").Schema<Booking, import("m
 } & {
     __v: number;
 }>;
+export {};

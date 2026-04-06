@@ -41,10 +41,9 @@ let ProductsService = class ProductsService {
             description: data.description || '',
             price: Number(data.price),
             priceUnit: data.priceUnit || '/unité',
-            icon: data.icon || '📦',
             category: data.category || 'Autre',
             stock: Number(data.stock) || 0,
-            images: Array.isArray(data.images) ? data.images : [],
+            images: Array.isArray(data.images) ? data.images.filter(Boolean) : [],
             rentalAvailable: data.rentalAvailable !== false,
             isActive: true,
         });
@@ -59,8 +58,6 @@ let ProductsService = class ProductsService {
             update.price = Number(data.price);
         if (data.priceUnit !== undefined)
             update.priceUnit = data.priceUnit;
-        if (data.icon !== undefined)
-            update.icon = data.icon;
         if (data.category !== undefined)
             update.category = data.category;
         if (data.stock !== undefined)
@@ -69,6 +66,9 @@ let ProductsService = class ProductsService {
             update.rentalAvailable = Boolean(data.rentalAvailable);
         if (data.isActive !== undefined)
             update.isActive = Boolean(data.isActive);
+        if (data.images !== undefined)
+            update.images = Array.isArray(data.images)
+                ? data.images.filter(Boolean) : [];
         const p = await this.model.findByIdAndUpdate(id, update, { new: true });
         if (!p)
             throw new common_1.NotFoundException('Product not found');
