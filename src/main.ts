@@ -1,29 +1,37 @@
-// main.ts - Ajoutez ces lignes au tout début
-import  dns from 'dns';
-dns.setServers(['1.1.1.1', '8.8.8.8']); // Cloudflare DNS et Google DNS
-
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import helmet from 'helmet'; 
+import helmet from 'helmet';
+
 async function bootstrap() {
-  // Vérification du DNS (optionnel)
-  console.log('🔧 DNS Servers:', dns.getServers());
-  
   const app = await NestFactory.create(AppModule);
   
   app.setGlobalPrefix('api');
   
+  // ✅ Configuration CORS avec tes URLs spécifiques
   app.enableCors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+    origin: [
+      'https://eventify-phi-nine.vercel.app',  // Ton frontend
+      'http://localhost:3000',                  // Développement local
+      'http://localhost:3001',                  // Alternative
+    ],
     credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS', 'HEAD'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'X-Requested-With'],
+    exposedHeaders: ['Authorization'],
   });
   
   app.useGlobalPipes(new ValidationPipe({
     whitelist: false,
     transform: true,
     transformOptions: { enableImplicitConversion: true },
+  }));
+  
+  // Helmet avec configuration CORS-friendly
+  app.use(helmet({
+    crossOriginResourcePolicy: { policy: "cross-origin" },
+    crossOriginOpenerPolicy: { policy: "unsafe-none" },
   }));
   
   const config = new DocumentBuilder()
